@@ -57,10 +57,8 @@ Here's a breakdown of what's being installed on AWS by module (`Jenkins/modules`
 #### Post install steps
 1. Log into Jenkins using the username and password provided in `jenkins.env`.
 
-2. If you didn't provide any plugins to install in `plugins.txt` then the next screen will prompt you to install plugins. Continue with the prompts to install plugins for the first time: ![install_plugins.png](/readmeFiles/install_plugins.png)
+2. Configure the Jenkins backup job and include the S3 bucket used in your Terraform config (`Jenkins/files/terraform.tfvars`) in the paramter `S3_BUCKET`: ![config_param.png](/readmeFiles/config_param.png) From here you can also configure the job to run on a schedule if desired: ![config_schedule.png](/readmeFiles/config_schedule.png)
 
-3. Configure the Jenkins backup job and include the S3 bucket used in your Terraform config (`Jenkins/files/terraform.tfvars`) in the paramter `S3_BUCKET`: ![config_param.png](/readmeFiles/config_param.png) From here you can also configure the job to run on a schedule if desired: ![config_schedule.png](/readmeFiles/config_schedule.png)
-
-4. Run the Jenkins backup job and cross your fingers :) Just kidding. It SHOULD work.
+3. Run the Jenkins backup job and cross your fingers :) Just kidding. It SHOULD work.
 
 ### If you have any issues with any part of the process or questions feel free to [open an issue in Github](https://github.com/bspeagle/Jenkins/issues) and I'll respond as soon as I can. Thanks for trying it out!
