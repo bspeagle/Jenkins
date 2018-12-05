@@ -4,7 +4,7 @@
 This is a full installation of Jenkins including a backup job via Terraform in AWS. Once installed, configured and backed up you can restore your jenkins instance using the same method as a new install - restoring all your backed up files.
 
 #### Configuration components:
-**files/plugins.txt** - this file is used to populate the desired plugins to install in Jenkins. If you're installing for the first time and don't know which plugins you need you can leave this file blank or use the pre-populated list of plugins provided in the repo. If you have an existing instance and you want the same plugins installed you can run the following command to extract a list of plugins from your existing Jenkins instance:
+**files/plugins.txt** - this file is used to populate the desired plugins to install in Jenkins. If you're installing for the first time and don't know which plugins you need use the pre-populated list of plugins provided in the repo. If you have an existing instance and you want the same plugins installed you can run the following command to extract a list of plugins from your existing Jenkins instance:
 ```Shell
 curl -s -k 'http://<adminUserName>:<adminPassWord>@localhost:8080/pluginManager/api/json?depth=1' \ | jq -r '.plugins[].shortName' | tee plugins.txt
 ```
