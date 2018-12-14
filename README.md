@@ -23,7 +23,7 @@ and then copy the `plugins.txt` file to the `files` subdirectory overwriting the
 - bucket_id = "S3 bucket to store Jenkins backup and config files in"
 - key_name = "keypair name for EC2 SSH access You must create the keypair in AWS manually. This does not get created through Terraform"
 
-**files/jenkins.ev** - this files is included in your `.gitignore`. This file is copied to S3 durring Terraform run and is used to generate the initial admin username and password for Jenkins via `files/init.groovy`. Create and populate the following:
+**files/jenkins.env** - this files is included in your `.gitignore`. This file is copied to S3 durring Terraform run and is used to generate the initial admin username and password for Jenkins via `files/init.groovy`. Create and populate the following:
 - admin_username=adminUserName
 - admin_password=adminPassword
 
