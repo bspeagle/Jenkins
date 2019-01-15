@@ -69,7 +69,7 @@ resource "aws_security_group" "ec2sg" {
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name = "${var.app}_EC2_S3_Access"
+  name = "${var.app}-${var.env}_Access"
 
   assume_role_policy = <<EOF
 {
@@ -102,8 +102,13 @@ resource "aws_iam_role_policy_attachment" "ecs-role-policy-attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "ecr-role-policy-attach" {
+  role = "${aws_iam_role.ec2_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "${var.app}_EC2_S3_Access"
+  name = "${var.app}-${var.env}_Access"
   role = "${aws_iam_role.ec2_role.name}"
 }
 
