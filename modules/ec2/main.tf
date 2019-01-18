@@ -29,7 +29,7 @@ data "template_file" "user_data-jenkins" {
 
 resource "aws_launch_configuration" "jMaster_lconfig" {
   image_id = "ami-b70554c8"
-  instance_type = "t2.medium"
+  instance_type = "t2.micro"
   security_groups = ["${var.ec2sg_id}"]
   iam_instance_profile = "${var.ec2_instance_profile_name}"
   user_data = "${data.template_file.user_data-jenkins.rendered}"
