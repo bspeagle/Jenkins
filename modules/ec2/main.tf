@@ -24,7 +24,6 @@ data "template_file" "user_data-jenkins" {
       plugin_script = "${var.plugin_script}"
       plugin_file = "${var.plugin_file}"
       jobs_file = "${var.jobs_file}"
-      default_port = "${var.default_port}"
     }
 }
 
