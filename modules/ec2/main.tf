@@ -24,12 +24,13 @@ data "template_file" "user_data-jenkins" {
       plugin_script = "${var.plugin_script}"
       plugin_file = "${var.plugin_file}"
       jobs_file = "${var.jobs_file}"
+      default_port = "${var.default_port}"
     }
 }
 
 resource "aws_launch_configuration" "jMaster_lconfig" {
   image_id = "ami-b70554c8"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   security_groups = ["${var.ec2sg_id}"]
   iam_instance_profile = "${var.ec2_instance_profile_name}"
   user_data = "${data.template_file.user_data-jenkins.rendered}"
@@ -88,7 +89,7 @@ resource "aws_lb" "jMaster-lb" {
 
 resource "aws_lb_listener" "jMaster-forward" {
   load_balancer_arn = "${aws_lb.jMaster-lb.arn}"
-  port = "8080"
+  port = 8080
   protocol = "HTTP"
 
   default_action {
@@ -104,39 +105,3 @@ output "jMaster-lb-zoneId" {
 output "jMaster-lb-dns" {
   value = "${aws_lb.jMaster-lb.dns_name}"
 }
-
-/*data "template_file" "user_data-jenkinsClient" {
-    template = "${file("/files/user_data-jenkinsClient.tpl")}"
-}
-
-resource "aws_launch_configuration" "lConfig" {
-  name            = "JENKINS-ASLC-SWARM"
-  image_id        = "ami-b70554c8"
-  instance_type   = "t2.micro"
-  security_groups = ["${aws_security_group.ec2sg.id}"]
-  iam_instance_profile = "${var.ec2_instance_profile_name}"
-  user_data       = "${data.template_file.user_data-jenkinsClient.rendered}"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_autoscaling_group" "asgWeb" {
-  name                      = "JENKINS-ASG-SWARM"
-  max_size                  = 2
-  min_size                  = 1
-  health_check_grace_period = 300
-  health_check_type         = "ELB"
-  desired_capacity          = 1
-  launch_configuration      = "${aws_launch_configuration.lConfig.name}"
-
-  vpc_zone_identifier = [
-    "${aws_subnet.sn1.id}",
-    "${aws_subnet.sn2.id}",
-  ]
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}*/
