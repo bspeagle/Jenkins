@@ -1,19 +1,3 @@
-variable "app" {}
-variable "env" {}
-variable "vpc_id" {}
-variable "sng1_id" {}
-variable "sng2_id" {}
-variable "ec2sg_id" {}
-variable "lbsg_id" {}
-variable "ec2_instance_profile_name" {}
-variable "s3_bucket" {}
-variable "env_file" {}
-variable "init_file" {}
-variable "plugin_script" {}
-variable "plugin_file" {}
-variable "jobs_file" {}
-variable "key_name" {}
-
 data "template_file" "user_data-jenkins" {
     template = "${file("../files/user_data-jenkins.tpl")}"
 
@@ -95,12 +79,4 @@ resource "aws_lb_listener" "jMaster-forward" {
     target_group_arn = "${aws_lb_target_group.jMaster-lb-tg.arn}"
     type = "forward"
   }
-}
-
-output "jMaster-lb-zoneId" {
-  value = "${aws_lb.jMaster-lb.zone_id}"
-}
-
-output "jMaster-lb-dns" {
-  value = "${aws_lb.jMaster-lb.dns_name}"
 }

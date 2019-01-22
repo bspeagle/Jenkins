@@ -1,6 +1,3 @@
-variable "app" {}
-variable "env" {}
-
 resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"
 
@@ -80,16 +77,4 @@ resource "aws_route_table_association" "rta-A" {
 resource "aws_route_table_association" "rta-B" {
   subnet_id      = "${aws_subnet.sn2.id}"
   route_table_id = "${aws_route_table.routeTable.id}"
-}
-
-output "vpc_id" {
-  value = "${aws_vpc.vpc.id}"
-}
-
-output "sng1_id" {
-  value = "${aws_subnet.sn1.id}"
-}
-
-output "sng2_id" {
-  value = "${aws_subnet.sn2.id}"
 }

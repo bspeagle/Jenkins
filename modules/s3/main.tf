@@ -1,7 +1,3 @@
-variable "app" {}
-variable "env" {}
-variable "bucket_id" {}
-
 resource "aws_s3_bucket_object" "envFile" {
     bucket = "${var.bucket_id}"
     acl    = "private"
@@ -35,24 +31,4 @@ resource "aws_s3_bucket_object" "jobsFile" {
     acl    = "private"
     key    = "jobs.tgz"
     source = "../files/jobs.tgz"
-}
-
-output "envFile" {
-  value = "${aws_s3_bucket_object.envFile.key}"
-}
-
-output "initFile" {
-  value = "${aws_s3_bucket_object.initFile.key}"
-}
-
-output "pluginScript" {
-  value = "${aws_s3_bucket_object.pluginScript.key}"
-}
-
-output "pluginFile" {
-  value = "${aws_s3_bucket_object.pluginFile.key}"
-}
-
-output "jobsFile" {
-  value = "${aws_s3_bucket_object.jobsFile.key}"
 }
