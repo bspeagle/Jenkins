@@ -72,7 +72,7 @@ resource "aws_lb" "jMaster-lb" {
 
 resource "aws_lb_listener" "jMaster-forward" {
   load_balancer_arn = "${aws_lb.jMaster-lb.arn}"
-  port = 8080
+  port = 80
   protocol = "HTTP"
 
   default_action {
