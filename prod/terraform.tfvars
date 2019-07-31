@@ -1,6 +1,0 @@
-env = "prod"
-region = "us-east-1"
-leader_instance_type = "t2.small"
-cloud_zone = "cumberland.cloud"
-key_name = "cumberland-aws"
-record_name = "jenkins"
