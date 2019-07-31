@@ -7,3 +7,5 @@
 
 # Crash log files
 crash.log
+
+terraform.tfvars
