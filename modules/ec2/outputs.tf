@@ -1,7 +1,7 @@
-output "jMaster-lb-zoneId" {
-  value = "${aws_lb.jMaster-lb.zone_id}"
+output "leader_lb_zone" {
+  value = "${aws_lb.leader_lb.zone_id}"
 }
 
-output "jMaster-lb-dns" {
-  value = "${aws_lb.jMaster-lb.dns_name}"
+output "leader_lb_dns" {
+  value = "${aws_lb.leader_lb.dns_name}"
 }

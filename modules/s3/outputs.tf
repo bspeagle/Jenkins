@@ -1,19 +1,23 @@
-output "envFile" {
-  value = "${aws_s3_bucket_object.envFile.key}"
+output "env_file" {
+  value = "${aws_s3_bucket_object.env_file.key}"
 }
 
-output "initFile" {
-  value = "${aws_s3_bucket_object.initFile.key}"
+output "init_file" {
+  value = "${aws_s3_bucket_object.init_file.key}"
 }
 
-output "pluginScript" {
-  value = "${aws_s3_bucket_object.pluginScript.key}"
+output "plugin_script" {
+  value = "${aws_s3_bucket_object.plugin_script.key}"
 }
 
-output "pluginFile" {
-  value = "${aws_s3_bucket_object.pluginFile.key}"
+output "plugin_file" {
+  value = "${aws_s3_bucket_object.plugin_file.key}"
 }
 
-output "jobsFile" {
-  value = "${aws_s3_bucket_object.jobsFile.key}"
+output "jobs_file" {
+  value = "${aws_s3_bucket_object.jobs_file.key}"
+}
+
+output "s3_bucket" {
+  value = "${aws_s3_bucket.jenkins_filez.id}"
 }

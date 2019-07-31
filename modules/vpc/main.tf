@@ -1,80 +1,77 @@
+data "aws_availability_zones" "azs" {}
+
 resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"
 
-  tags {
-    Name = "${var.app}-VPC"
-    App  = "${var.app}"
-    Env  = "${var.env}"
+  tags = {
+    Name = "${var.app}-${var.env}-vpc"
+    App = "${var.app}"
+    Env = "${var.env}"
   }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 
-  tags {
-    Name = "${var.app}-IGW"
-    App  = "${var.app}"
-    Env  = "${var.env}"
+  tags = {
+    Name = "${var.app}-${var.env}-igw"
+    App = "${var.app}"
+    Env = "${var.env}"
   }
 }
 
-resource "aws_subnet" "sn1" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.0.0/24"
-  availability_zone       = "us-east-1a"
-  map_public_ip_on_launch = true
-
-  tags {
-    Name = "${var.app}-SNG-1"
-    App  = "${var.app}"
-    Env  = "${var.env}"
-  }
-}
-
-resource "aws_subnet" "sn2" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "10.0.1.0/24"
-  availability_zone       = "us-east-1b"
-  map_public_ip_on_launch = true
-
-  tags {
-    Name = "${var.app}-SNG-2"
-    App  = "${var.app}"
-    Env  = "${var.env}"
-  }
-}
-
-resource "aws_network_acl" "acl" {
+resource "aws_subnet" "vpc_subnets" {
+  count = 2
   vpc_id = "${aws_vpc.vpc.id}"
+  cidr_block = "${cidrsubnet(aws_vpc.vpc.cidr_block, 8, var.subnet_segment_start + count.index)}"
+  map_public_ip_on_launch = true
+  availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
 
-  tags {
-    Name = "${var.app}-ACL"
+  tags = {
+    Name = "${var.app}-${var.env}-subnet${count.index}"
+    App = "${var.app}"
+    Env = "${var.env}"
+  }
+}
+
+resource "aws_default_network_acl" "acl" {
+  default_network_acl_id = "${aws_vpc.vpc.default_network_acl_id}"
+  
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "${var.app}-${var.env}-acl"
     App  = "${var.app}"
     Env  = "${var.env}"
   }
 }
 
-resource "aws_route_table" "routeTable" {
-  vpc_id = "${aws_vpc.vpc.id}"
+resource "aws_default_route_table" "default_rt" {
+  default_route_table_id = "${aws_vpc.vpc.default_route_table_id}"
 
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.igw.id}"
   }
 
-  tags {
-    Name = "${var.app}-VPC-ROUTES"
+  tags = {
+    Name = "${var.app}-${var.env}-default-rt"
     App  = "${var.app}"
     Env  = "${var.env}"
   }
-}
-
-resource "aws_route_table_association" "rta-A" {
-  subnet_id      = "${aws_subnet.sn1.id}"
-  route_table_id = "${aws_route_table.routeTable.id}"
-}
-
-resource "aws_route_table_association" "rta-B" {
-  subnet_id      = "${aws_subnet.sn2.id}"
-  route_table_id = "${aws_route_table.routeTable.id}"
 }

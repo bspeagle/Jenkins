@@ -1,6 +1,11 @@
 variable "app" {}
+
 variable "env" {}
-variable "zone_id" {}
+
+variable "cloud_zone" {}
+
 variable "record_name" {}
-variable "jMaster-lb-zoneId" {}
-variable "jMaster-lb-dns" {}
+
+variable "leader_lb_zone" {}
+
+variable "leader_lb_dns" {}

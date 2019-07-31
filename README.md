@@ -14,16 +14,21 @@ sudo yum install jq -y
 ```
 and then copy the `plugins.txt` file to the `files` subdirectory overwriting the current `plugins.txt` file.
 
-**files/terraform.tfvars** - this file is included in your `.gitignore`. When executing terraform you'll use this file to populate the required variabled needed for Terraform to run. Create and populate the following:
+**files/terraform.tfvars** - this file is included in your `.gitignore`. When executing terraform you'll use this file to populate the required global variables needed for Terraform to run. Create and populate the following:
 - access_key = "Your AWS access key"
 - secret_key = "Your AWS secret key"
-- region = "Regiong to deploy Jenkins to"
-- zone_id = "If you're using the Route 53 module the zone to create the record in"
-- record_name = "The desired Route 53 record name"
-- bucket_id = "S3 bucket to store Jenkins backup and config files in"
-- key_name = "keypair name for EC2 SSH access You must create the keypair in AWS manually. This does not get created through Terraform"
+- app = "Your app name"
+- ec2_ami = "The AMI ID to use with the ec2 instances"
 
-**files/jenkins.env** - this files is included in your `.gitignore`. This file is copied to S3 durring Terraform run and is used to generate the initial admin username and password for Jenkins via `files/init.groovy`. Create and populate the following:
+**prod/terraform.tfvars** - this file is included in your `.gitignore`. When executing terraform you'll use this file to populate the required global variables needed for Terraform to run. Create and populate the following:
+- env = "The environment you're deploying to"
+- region = "The AWS region to deploy to"
+- leader_instance_type = "The ec2 instance type for the leader instance"
+- cloud_zone = "The Route53 hosted zone Domain Name to create the record in. You can omit the '.' in the Domain Name"
+- key_name = "The keypair to use with ec2. This must be generated first through the console"
+- record_name = "The name of the Route53 record to created. For example, if your hosted zone Domain Name is 'blah.com' and your record is 'hello' this would create a Route53 record named 'hello.blah.com'"
+
+**files/config/jenkins.env** - this file is included in your `.gitignore`. The file is copied to S3 durring Terraform run and is used to generate the initial admin username and password for Jenkins via `files/config/init.groovy`. Create and populate the following:
 - admin_username=adminUserName
 - admin_password=adminPassword
 
@@ -57,8 +62,8 @@ Here's a breakdown of what's being installed on AWS by module (`Jenkins/modules`
 #### Post install steps
 1. Log into Jenkins using the username and password provided in `jenkins.env`.
 
-2. Configure the Jenkins backup job and include the S3 bucket used in your Terraform config (`Jenkins/files/terraform.tfvars`) in the paramter `S3_BUCKET`: ![config_param.png](/readmeFiles/config_param.png) From here you can also configure the job to run on a schedule if desired: ![config_schedule.png](/readmeFiles/config_schedule.png)
+2. Configure the Jenkins backup job and include the S3 bucket created in the S3 module in the paramter `S3_BUCKET`: ![config_param.png](/readmeFiles/config_param.png) From here you can also configure the job to run on a schedule if desired: ![config_schedule.png](/readmeFiles/config_schedule.png)
 
-3. Run the Jenkins backup job and cross your fingers :) Just kidding. It SHOULD work.
+3. Run the Jenkins backup job and cross your fingers :) Just kidding. It'll work.
 
 ### If you have any issues with any part of the process or questions feel free to [open an issue in Github](https://github.com/bspeagle/Jenkins/issues) and I'll respond as soon as I can. Thanks for trying it out!

@@ -1,9 +1,9 @@
-output "lbsg_id" {
-  value = "${aws_security_group.lbsg.id}"
+output "lb_sg_id" {
+  value = "${aws_security_group.lb.id}"
 }
 
-output "ec2sg_id" {
-  value = "${aws_security_group.ec2sg.id}"
+output "ec2_sg_id" {
+  value = "${aws_security_group.ec2.id}"
 }
 
 output "ec2_instance_profile_name" {
