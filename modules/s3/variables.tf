@@ -1,3 +1,0 @@
-variable "app" {}
-
-variable "env" {}
