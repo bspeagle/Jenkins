@@ -14,7 +14,7 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | app | The name of the application to deploy | `string` | `"Jenkins"` | no |
-| aws\_profile | AWS profile to use for provider authentication (.aws/) | `string` | `"default-cg"` | no |
+| aws\_profile | AWS profile to use for provider authentication (.aws/) | `string` | `null` | no |
 | aws\_region | AWS region to run Terraform code in | `string` | `"us-east-1"` | no |
 | ec2\_enable\_ssh | Toggle SSH access for EC2 instance | `bool` | `false` | no |
 | environment | The environment for the app deployment | `string` | `"DEV"` | no |

@@ -13,3 +13,5 @@ crash.log
 *.pem
 
 .vscode
+
+config.tfvars

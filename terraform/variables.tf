@@ -5,7 +5,7 @@
 variable "aws_profile" {
   description = "AWS profile to use for provider authentication (.aws/)"
   type        = string
-  default     = "default-cg"
+  default     = null
 }
 
 variable "aws_region" {
