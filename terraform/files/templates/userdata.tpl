@@ -20,24 +20,51 @@ yum_repos:
 
 # Packages to install
 packages:
+  - curl
   - git
   - jq
   - yum-utils
   - java
   - jenkins
   - terraform
+  - docker
 
 # Add users to the system
 users:
   - default
+  - name: ${username}
+    groups: docker
+    passwd: ${password_hash}
 
 runcmd:
+  # Install Node.js 16
+  - curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -
+  - yum install -y nodejs
+  
+  # Install Node-Lambda
+  - npm install -g node-lambda
+
+  # Docker config
+  - service docker start
+
+  # Install PHP
+  - amazon-linux-extras install -y php7.2
+  - curl -sS https://getcomposer.org/installer -o composer-setup.php
+  - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+  # S3 Boot Tasks
+  - chmod +x /home/${username}/aws_s3_boot_tasks.sh
+  - /home/${username}/aws_s3_boot_tasks.sh
+
+  # Install Jenkins plugins
+  - /var/lib/jenkins/setup/install-plugins.sh $(echo $(cat plugins.txt))
+
+  # Startup Jenkins
   - sudo systemctl start jenkins
   - sudo systemctl enable jenkins
   - systemctl is-enabled jenkins
 
-
-
+final_message: "DONE DONE DONE! Time to completion: $UPTIME seconds"
 
 
 

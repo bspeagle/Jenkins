@@ -20,7 +20,18 @@ locals {
     },
     {
       key = "jobs.tgz"
-    }
+    },
+    # {
+    #   key = "aws_s3_boot_tasks.sh"
+    #   config = {
+    #     s3_bucket     = "",
+    #     env_file      = "",
+    #     init_file     = "",
+    #     plugin_script = "",
+    #     plugin_file   = "",
+    #     jobs_file     = ""
+    #   }
+    # }
   ]
 
   load_balancer_config = [
@@ -36,19 +47,6 @@ locals {
           port = 80
         }
       ]
-    },
-    # {
-    #   protocol = "HTTP"
-    #   config = [
-    #     {
-    #       type = "target_group"
-    #       port = 8080
-    #     },
-    #     {
-    #       type = "listener"
-    #       port = 80
-    #     }
-    #   ]
-    # },
+    }
   ]
 }

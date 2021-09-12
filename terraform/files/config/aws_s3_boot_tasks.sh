@@ -1,44 +1,13 @@
-#!/bin/bash
+#!/bin/sh
+# AWS S3 boot tasks
 
-sudo yum update –y
-
-sudo yum install -y java-1.8.0-openjdk.x86_64
-sudo /usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java
-sudo /usr/sbin/alternatives --set javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac
-
-sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
-sudo yum install jenkins -y
-
-echo 'jenkins  ALL=(ALL:ALL) ALL' >> /etc/sudoers
-
-wget https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip -O terraform.zip
-unzip terraform.zip
-sudo mv terraform /usr/bin/
-rm terraform.zip
-
-sudo yum install git -y
-
-sudo yum install jq -y
-
-curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -
-sudo yum -y install nodejs
-
-sudo npm install -g node-lambda
-
-sudo yum install -y docker
-sudo usermod -a -G docker jenkins
-sudo service docker start
-
-sudo amazon-linux-extras install -y php7.2
-curl -sS https://getcomposer.org/installer -o composer-setup.php
-sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-
+## Copy config files to S3
 aws s3 cp s3://${s3_bucket}/${env_file} /var/lib/jenkins/init.groovy.d/
 aws s3 cp s3://${s3_bucket}/${init_file} /var/lib/jenkins/init.groovy.d/
 aws s3 cp s3://${s3_bucket}/${plugin_script} /var/lib/jenkins/setup/
 aws s3 cp s3://${s3_bucket}/${plugin_file} /var/lib/jenkins/setup/
 
+## Download files from S3 to Jenkins directory
 aws s3 cp s3://${s3_bucket}/${jobs_file} /tmp/
 tar xzvf /tmp/jobs.tgz -C /var/lib/jenkins/
 sudo chown jenkins /tmp/jobs.tgz
@@ -93,8 +62,3 @@ if [[ $mfResponse != "" ]]
 then
     aws s3 cp s3://${s3_bucket}/org.jenkinsci.plugins.configfiles.GlobalConfigFiles.xml /var/lib/jenkins/
 fi
-
-cd /var/lib/jenkins/setup
-sh install-plugins.sh $(echo $(cat plugins.txt))
-
-sudo service jenkins start

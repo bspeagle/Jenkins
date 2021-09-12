@@ -3,8 +3,7 @@ data "template_file" "this" {
 
   template = file("${path.cwd}/${var.object_source}/${local.objects_with_configs[count.index].key}")
 
-  vars = {
-    admin_username = lookup(local.objects_with_configs[count.index].config, "admin_username", "username")
-    admin_password = lookup(local.objects_with_configs[count.index].config, "admin_password", "password")
-  }
+  vars = [for object in local.objects_with_configs : [
+    for config in object : config
+  ][0]][0]
 }

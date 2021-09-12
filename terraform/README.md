@@ -26,5 +26,6 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | generated\_name | n/a |
+| password | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
