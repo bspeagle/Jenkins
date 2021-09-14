@@ -21,6 +21,8 @@ No requirements.
 
 ## Outputs
 
-No output.
+| Name | Description |
+|------|-------------|
+| blah | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

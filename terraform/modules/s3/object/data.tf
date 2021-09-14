@@ -5,5 +5,6 @@ data "template_file" "this" {
 
   vars = [for object in local.objects_with_configs : [
     for config in object : config
-  ][0]][0]
+    ][0]
+  ][count.index]
 }

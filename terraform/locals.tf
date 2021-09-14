@@ -21,17 +21,17 @@ locals {
     {
       key = "jobs.tgz"
     },
-    # {
-    #   key = "aws_s3_boot_tasks.sh"
-    #   config = {
-    #     s3_bucket     = "",
-    #     env_file      = "",
-    #     init_file     = "",
-    #     plugin_script = "",
-    #     plugin_file   = "",
-    #     jobs_file     = ""
-    #   }
-    # }
+    {
+      key = "aws_s3_boot_tasks.sh"
+      config = {
+        "s3_bucket"     = module.s3_bucket.id,
+        "env_file"      = "jenkins.env",
+        "init_file"     = "init.groovy",
+        "plugin_script" = "install_plugins.sh",
+        "plugin_file"   = "plugins.txt",
+        "jobs_file"     = "jobs.tgz"
+      }
+    }
   ]
 
   load_balancer_config = [
