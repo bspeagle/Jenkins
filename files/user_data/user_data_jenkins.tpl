@@ -6,9 +6,14 @@ sudo yum install -y java-1.8.0-openjdk.x86_64
 sudo /usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/java
 sudo /usr/sbin/alternatives --set javac /usr/lib/jvm/jre-1.8.0-openjdk.x86_64/bin/javac
 
+sudo yum install wget -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins.io/redhat/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+sudo amazon-linux-extras install epel -y
+sudo yum update -y
 sudo yum install jenkins -y
+sudo systemctl daemon-reload
 
 echo 'jenkins  ALL=(ALL:ALL) ALL' >> /etc/sudoers
 
@@ -34,6 +39,12 @@ sudo amazon-linux-extras install -y php7.2
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+sudo amazon-linux-extras install -y php7.2
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# You may need to pass the aws --region flag also for all aws cp commands listed below depending on profile/permissions setup in AWS
+# e.g., aws s3 cp s3://${s3_bucket}/${env_file} --region us-east-1 /var/lib/jenkins/init.groovy.d/ 
 aws s3 cp s3://${s3_bucket}/${env_file} /var/lib/jenkins/init.groovy.d/
 aws s3 cp s3://${s3_bucket}/${init_file} /var/lib/jenkins/init.groovy.d/
 aws s3 cp s3://${s3_bucket}/${plugin_script} /var/lib/jenkins/setup/
